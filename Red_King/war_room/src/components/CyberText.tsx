@@ -29,7 +29,7 @@ const CyberText: React.FC<CyberTextProps> = ({
         if (!started) return;
 
         let currentIndex = 0;
-        let scrambleInterval: NodeJS.Timeout;
+        let scrambleInterval: ReturnType<typeof setInterval>;
 
         const interval = setInterval(() => {
             if (currentIndex >= text.length) {
