@@ -73,7 +73,10 @@ class IntelligenceCore:
         Direct interface to the LLM Cortex (Switched to Gemini).
         """
         # Gemini API URL
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={os.getenv('GEMINI_API_KEY') or 'AIzaSyCQOfZBon4gPYYbli1ZPoWeE8j-bNeLWXc'}"
+        api_key = os.getenv('GEMINI_API_KEY')
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable is not set")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
 
         headers = {"Content-Type": "application/json"}
 
