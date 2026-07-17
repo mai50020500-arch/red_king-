@@ -18,7 +18,8 @@ const LiveViewport = ({ agentId, onClose }: LiveViewportProps) => {
 
   useEffect(() => {
     // Connect to specific agent stream
-    const ws = new WebSocket(`ws://localhost:9001/api/hive/stream/${agentId}`);
+    const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${wsProto}//${window.location.host}/api/hive/stream/${agentId}`);
     socketRef.current = ws;
 
     ws.onopen = () => setStatus('LIVE');

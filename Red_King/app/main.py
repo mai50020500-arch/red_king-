@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from scapy.all import rdpcap, IP, TCP, UDP
 import shutil
+from app.api.mock_routes import router as mock_router
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("RedKing_Core")
@@ -26,6 +28,9 @@ if not os.path.exists(static_path):
     os.makedirs(static_path)
 
 # --- API ROUTES (must be defined before static file mount) ---
+
+app.include_router(mock_router)
+
 
 @app.get("/api/health")
 async def health_check():
