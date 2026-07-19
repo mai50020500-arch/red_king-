@@ -40,9 +40,9 @@ def test_api_hive_checkin_flow(test_client):
     assert "commands" in decrypted_resp
 
 @pytest.mark.integration
-async def test_api_consult_mocked(test_client, monkeypatch):
+def test_api_consult_mocked(test_client, monkeypatch):
     """Verify the /api/consult endpoint with a mocked hive mind."""
-    async def mock_advice(query: str):
+    def mock_advice(query: str):
         return "Mocked Advice"
     
     monkeypatch.setattr("app.main.hive_mind.get_strategic_advice", mock_advice)

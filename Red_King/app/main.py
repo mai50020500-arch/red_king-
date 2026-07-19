@@ -7,7 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from scapy.all import rdpcap, IP, TCP, UDP
 import shutil
-from app.api.mock_routes import router as mock_router
+from app.api.mock_routes import router as mock_router, cipher_engine
+from app.core.llm_commander import hive_mind
 
 
 logging.basicConfig(level=logging.INFO)

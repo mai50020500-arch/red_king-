@@ -7,6 +7,8 @@ from app.main import app
 from app.core.database import SovereignDB
 from app.core.llm_commander import LLMCommander
 
+pytest_plugins = ["pytest_asyncio"]
+
 @pytest.fixture(scope="session")
 def test_client():
     """Returns a FastAPI TestClient."""
