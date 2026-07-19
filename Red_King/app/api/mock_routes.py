@@ -242,12 +242,35 @@ async def scan(body: dict):
 @router.post("/forensics/upload")
 async def forensics_upload(file: UploadFile = File(...)):
     return {
-        "report": (
-            f"Forensics analysis of '{file.filename}': "
-            "No live signatures were queried (mock mode). "
-            "Entropy analysis: normal. PE headers: valid. "
-            "Recommendation: submit to sandbox for dynamic analysis."
-        )
+        "report": {
+            "device_count": 4,
+            "credentials_found": 2,
+            "sessions_hijacked": 1,
+            "details": {
+                "zombie_sessions": [
+                    {
+                        "type": "Browser",
+                        "victim_ip": "192.168.1.105",
+                        "token": "sess-001",
+                    }
+                ],
+                "credentials": [
+                    {
+                        "type": "Cookie",
+                        "src": "browser-cache",
+                        "data": "session=abc123",
+                    }
+                ],
+                "devices": {
+                    "192.168.1.105": {
+                        "ip": "192.168.1.105",
+                        "os_guess": "Windows",
+                        "ja3_signatures": ["JA3-1"],
+                    }
+                },
+            },
+            "summary": f"Forensics analysis of '{file.filename}': No live signatures were queried (mock mode).",
+        }
     }
 
 

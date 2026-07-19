@@ -40,6 +40,23 @@ def test_api_hive_checkin_flow(test_client):
     assert "commands" in decrypted_resp
 
 @pytest.mark.integration
+def test_forensics_upload_returns_structured_report(test_client):
+    """Verify the forensics endpoint returns the object shape expected by the UI."""
+    response = test_client.post(
+        "/api/forensics/upload",
+        files={"file": ("sample.pcap", b"fake-pcap", "application/octet-stream")},
+    )
+    assert response.status_code == 200
+    report = response.json()["report"]
+    assert report["device_count"] >= 1
+    assert report["credentials_found"] >= 0
+    assert "details" in report
+    assert "zombie_sessions" in report["details"]
+    assert "credentials" in report["details"]
+    assert "devices" in report["details"]
+
+
+@pytest.mark.integration
 def test_api_consult_mocked(test_client, monkeypatch):
     """Verify the /api/consult endpoint with a mocked hive mind."""
     def mock_advice(query: str):
