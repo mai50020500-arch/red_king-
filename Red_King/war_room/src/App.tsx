@@ -11,6 +11,7 @@ import SwarmController from './components/SwarmController';
 import LiveViewport from './components/LiveViewport';
 import StealthPanel from './components/StealthPanel';
 import SwarmJobMonitor from './components/SwarmJobMonitor';
+import ThreatTimeline from './components/ThreatTimeline';
 
 const domains = [
   { id: 'threat-intel', label: 'Threat Intelligence', icon: Compass },
@@ -157,6 +158,9 @@ function App() {
                     <div className="h-2 w-[98%] rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400" />
                   </div>
                 </div>
+              </div>
+              <div className="ops-panel min-h-[260px] overflow-hidden p-0">
+                <ThreatTimeline />
               </div>
               <div className="ops-panel p-4">
                 <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-slate-500">
