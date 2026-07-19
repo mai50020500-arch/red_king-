@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Terminal, ShieldAlert, Cpu, Network } from 'lucide-react';
+import { Terminal, Cpu, Network } from 'lucide-react';
 import CyberText from './CyberText';
 import TypewriterEffect from './TypewriterEffect';
 

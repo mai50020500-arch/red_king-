@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, Play, ShieldAlert, Cpu, HardDrive, Terminal, Layers } from 'lucide-react';
+import { Users, Play, ShieldAlert, Cpu, Terminal, Layers } from 'lucide-react';
 
 interface SwarmStats {
   total: number;

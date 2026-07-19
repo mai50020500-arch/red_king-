@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { Activity, Zap, Server, AlertTriangle, Terminal } from 'lucide-react';
 
-interface PLCNode {
-  ip: string;
-  status: string;
-  proto: string;
-}
-
 const ScadaDashboard: React.FC = () => {
-  const [plcs, setPlcs] = useState<PLCNode[]>([]);
-  const [scanning, setScanning] = useState(false);
   const [striking, setStriking] = useState<string | null>(null);
 
   const triggerStrike = async (ip: string) => {

@@ -8,7 +8,6 @@ interface LiveViewportProps {
 
 const LiveViewport = ({ agentId, onClose }: LiveViewportProps) => {
   const [frame, setFrame] = useState<string | null>(null);
-  const [latency, setLatency] = useState(0);
   const [fps, setFps] = useState(0);
   const [status, setStatus] = useState<'CONNECTING' | 'LIVE' | 'OFFLINE'>('CONNECTING');
   
@@ -78,7 +77,7 @@ const LiveViewport = ({ agentId, onClose }: LiveViewportProps) => {
                 </div>
                 <div className="flex items-center gap-1">
                    <RefreshCw size={10} />
-                   <span>LATENCY: {latency}ms</span>
+                   <span>LATENCY: 0ms</span>
                 </div>
              </div>
              <button onClick={onClose} className="p-1 hover:bg-red-500/20 text-red-500 transition-colors">

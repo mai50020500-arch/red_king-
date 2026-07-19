@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import ForceGraph3D from 'react-force-graph-3d';
 
-// Graph Data Interfaces
 interface GraphNode {
     id: string;
     group: number;
@@ -26,13 +24,12 @@ const NeuralMesh = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
-    const [pulse, setPulse] = useState(false);
+    const [pulse] = useState(false);
 
-    // Fetch Graph Topology from the Hive Mind
     useEffect(() => {
         const fetchTopology = async () => {
             try {
-                const res = await fetch("/api/graph");
+                const res = await fetch('/api/graph');
                 if (res.ok) {
                     const data = await res.json();
                     setGraphData(data);
@@ -50,22 +47,22 @@ const NeuralMesh = () => {
             <ForceGraph3D
                 graphData={graphData}
                 nodeAutoColorBy="group"
-                nodeColor={node => {
+                nodeColor={(node: GraphNode) => {
                     if (node.id === 'SHADOW_RELAY' && pulse) return '#ffffff';
-                    switch(node.group) {
-                        case 1: return '#ff003c'; // King
-                        case 2: return '#bd00ff'; // Zombie
-                        case 3: return '#00ff41'; // Ghost
-                        default: return '#00f3ff'; // Target
+                    switch (node.group) {
+                        case 1: return '#ff003c';
+                        case 2: return '#bd00ff';
+                        case 3: return '#00ff41';
+                        default: return '#00f3ff';
                     }
                 }}
                 nodeLabel="label"
-                linkColor={(link: any) => link.is_shadow ? '#444444' : (link.dashed ? '#00f3ff' : '#ffffff')}
-                linkWidth={(link: any) => link.is_shadow ? 0.2 : (link.dashed ? 0.3 : 0.5)}
+                linkColor={(link: GraphLink) => (link.is_shadow ? '#444444' : link.dashed ? '#00f3ff' : '#ffffff')}
+                linkWidth={(link: GraphLink) => (link.is_shadow ? 0.2 : link.dashed ? 0.3 : 0.5)}
                 linkOpacity={0.3}
-                linkDirectionalArrowLength={(link: any) => link.is_shadow ? 0 : 3}
+                linkDirectionalArrowLength={(link: GraphLink) => (link.is_shadow ? 0 : 3)}
                 linkDirectionalArrowRelPos={1}
-                linkDirectionalParticles={(link: any) => link.is_shadow ? 2 : 0}
+                linkDirectionalParticles={(link: GraphLink) => (link.is_shadow ? 2 : 0)}
                 linkDirectionalParticleWidth={0.5}
                 linkDirectionalParticleSpeed={0.005}
                 backgroundColor="#00000000"

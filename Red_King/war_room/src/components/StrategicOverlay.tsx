@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Activity, Shield, Users, Wifi, Database } from 'lucide-react';
+import { Globe, Users, Wifi, Database } from 'lucide-react';
 
 interface StrategicOverlayProps {
   isOpen: boolean;

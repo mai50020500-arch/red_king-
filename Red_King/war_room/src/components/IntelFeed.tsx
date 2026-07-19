@@ -15,7 +15,6 @@ interface AIResult {
 
 const IntelFeed = () => {
     const [targets, setTargets] = useState<TargetData[]>([]);
-    const [loading, setLoading] = useState(true);
     const [voiceEnabled, setVoiceEnabled] = useState(false);
     const [reconStatus, setReconStatus] = useState<{ [key: string]: string }>({});
     const [aiResults, setAiResults] = useState<{ [key: string]: AIResult | null }>({});
@@ -33,8 +32,6 @@ const IntelFeed = () => {
                 }
             } catch (err) {
                 console.error("Failed to fetch targets:", err);
-            } finally {
-                setLoading(false);
             }
         };
 

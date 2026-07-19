@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Shield, ShieldAlert, Wifi, Globe, Trash2, Plus, Zap } from 'lucide-react';
+import { Shield, ShieldAlert, Globe, Trash2, Plus, Zap } from 'lucide-react';
 
 interface Redirector {
   id: string;

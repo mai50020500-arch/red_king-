@@ -48,7 +48,7 @@ const CyberText: React.FC<CyberTextProps> = ({
 
             // Finalize character
             setTimeout(() => {
-                setDisplay(prev => text.substring(0, currentIndex + 1));
+                setDisplay(text.substring(0, currentIndex + 1));
                 currentIndex++;
             }, speed);
 
