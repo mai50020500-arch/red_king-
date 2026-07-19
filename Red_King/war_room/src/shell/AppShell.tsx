@@ -1,14 +1,6 @@
 /**
  * Red King — Shell
- * AppShell
- *
- * Root layout orchestrator. Composes TopBar, LeftSidebar, Workspace,
- * RightSidebar, BottomConsole, and StatusBar into the full application frame.
- *
- * Usage:
- *   <AppShell left={<LeftPanels />} right={<RightPanels />} bottom={<Console />}>
- *     <MainContent />
- *   </AppShell>
+ * AppShell — Root Layout Orchestrator
  */
 
 import React from 'react';
@@ -22,13 +14,9 @@ import { ResizableHandle } from './ResizableHandle';
 import { useShellLayout } from './hooks/useShellLayout';
 
 interface AppShellProps {
-  /** Content rendered in the left sidebar zone */
   left?: React.ReactNode;
-  /** Content rendered in the right sidebar zone */
   right?: React.ReactNode;
-  /** Content rendered in the bottom console drawer */
   bottom?: React.ReactNode;
-  /** Content rendered in the centre Workspace */
   children: React.ReactNode;
 }
 
@@ -44,7 +32,7 @@ export const AppShell: React.FC<AppShellProps> = ({ left, right, bottom, childre
   } = useShellLayout();
 
   return (
-    <div className="flex flex-col h-screen bg-[#0a0a0a] text-[#e0e0e0] font-mono overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#080808] text-[#d4d4d4] font-mono overflow-hidden antialiased">
 
       <TopBar
         leftOpen={layout.leftOpen}
@@ -55,7 +43,7 @@ export const AppShell: React.FC<AppShellProps> = ({ left, right, bottom, childre
         onToggleBottom={toggleBottom}
       />
 
-      {/* Shell body: sidebars + workspace */}
+      {/* Shell body */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
 
         {left && (
@@ -63,7 +51,6 @@ export const AppShell: React.FC<AppShellProps> = ({ left, right, bottom, childre
             <LeftSidebar open={layout.leftOpen} width={layout.leftWidth}>
               {left}
             </LeftSidebar>
-
             {layout.leftOpen && (
               <ResizableHandle
                 direction="right"
@@ -85,7 +72,6 @@ export const AppShell: React.FC<AppShellProps> = ({ left, right, bottom, childre
                 onChange={setRightWidth}
               />
             )}
-
             <RightSidebar open={layout.rightOpen} width={layout.rightWidth}>
               {right}
             </RightSidebar>
@@ -98,6 +84,7 @@ export const AppShell: React.FC<AppShellProps> = ({ left, right, bottom, childre
           open={layout.bottomOpen}
           height={layout.bottomHeight}
           onResize={setBottomHeight}
+          onClose={toggleBottom}
         >
           {bottom}
         </BottomConsole>

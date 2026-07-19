@@ -1,13 +1,18 @@
 /**
  * Red King — Shell
- * TopBar
- *
- * Fixed application header. Receives toggle callbacks from AppShell
- * so sidebar and console visibility can be controlled from the bar.
+ * TopBar — Premium Enterprise Header
  */
 
 import React from 'react';
-import { Activity, Skull, PanelLeft, PanelRight, Terminal } from 'lucide-react';
+import {
+  Activity,
+  Skull,
+  PanelLeft,
+  PanelRight,
+  TerminalSquare,
+  Hexagon,
+  ChevronRight,
+} from 'lucide-react';
 
 interface TopBarProps {
   leftOpen: boolean;
@@ -27,75 +32,130 @@ export const TopBar: React.FC<TopBarProps> = ({
   onToggleBottom,
 }) => {
   return (
-    <header className="h-[52px] shrink-0 px-4 border-b border-red-500/20 flex items-center justify-between bg-black/60 z-20">
+    <header className="relative h-[48px] shrink-0 flex items-center justify-between px-3 z-30 bg-[#080808]/95 backdrop-blur-xl border-b border-white/[0.06]">
+      {/* Accent line — top edge */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
 
-      {/* Left: logo + panel toggles */}
-      <div className="flex items-center gap-3">
-        <button
+      {/* ── Left: panel toggle + wordmark ───────────────────────── */}
+      <div className="flex items-center gap-1">
+        <IconButton
           onClick={onToggleLeft}
+          active={leftOpen}
           title={leftOpen ? 'Collapse left panel' : 'Expand left panel'}
-          className={[
-            'p-1 rounded transition-colors duration-150',
-            leftOpen
-              ? 'text-red-500/70 hover:text-red-500'
-              : 'text-zinc-600 hover:text-red-500/70',
-          ].join(' ')}
         >
-          <PanelLeft size={15} />
-        </button>
+          <PanelLeft size={14} />
+        </IconButton>
 
-        <div className="flex items-center gap-3 pl-1">
-          <h1 className="text-xl font-black tracking-tighter text-red-500 leading-none">
-            RED KING <span className="text-zinc-600">|</span> WAR ROOM
-          </h1>
-          <div className="flex items-center gap-1.5 border-l border-zinc-800 pl-3">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-[9px] text-red-500/60 font-bold tracking-widest uppercase">
-              System Online
+        <div className="flex items-center gap-2.5 pl-2">
+          {/* Logo mark */}
+          <div className="relative">
+            <Hexagon
+              size={20}
+              className="text-red-500/80 fill-red-500/10"
+              strokeWidth={1.5}
+            />
+            <span className="absolute inset-0 flex items-center justify-center text-[7px] font-black text-red-400 leading-none">
+              RK
+            </span>
+          </div>
+
+          {/* Wordmark */}
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[13px] font-black tracking-[0.08em] leading-none bg-gradient-to-r from-red-400 to-red-500 bg-clip-text text-transparent uppercase">
+              Red King
+            </h1>
+            <ChevronRight size={10} className="text-zinc-700" strokeWidth={2.5} />
+            <span className="text-[11px] font-semibold tracking-[0.06em] text-zinc-500 uppercase">
+              War Room
+            </span>
+          </div>
+
+          {/* Live indicator */}
+          <div className="flex items-center gap-1.5 pl-3 border-l border-white/[0.06]">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-60" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+            </span>
+            <span className="text-[9px] font-bold tracking-[0.14em] text-red-500/50 uppercase">
+              Online
             </span>
           </div>
         </div>
       </div>
 
-      {/* Right: actions + right panel toggle */}
-      <div className="flex items-center gap-2">
+      {/* ── Right: actions + panel toggle ───────────────────────── */}
+      <div className="flex items-center gap-1.5">
+        {/* Console toggle */}
         <button
           onClick={onToggleBottom}
           title={bottomOpen ? 'Close console' : 'Open console'}
           className={[
-            'flex items-center gap-1.5 px-2.5 py-1 rounded text-[9px] uppercase font-bold tracking-wider transition-all duration-150',
+            'flex items-center gap-1.5 px-2.5 h-7 rounded text-[9px] font-bold tracking-[0.10em] uppercase transition-all duration-150',
             bottomOpen
-              ? 'border border-red-500/70 bg-red-500/20 text-red-400'
-              : 'border border-zinc-700/50 bg-zinc-900/40 text-zinc-500 hover:border-red-500/40 hover:text-red-500/70',
+              ? 'bg-red-500/15 border border-red-500/40 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.15)]'
+              : 'bg-white/[0.03] border border-white/[0.07] text-zinc-500 hover:bg-white/[0.06] hover:text-zinc-300 hover:border-white/[0.12]',
           ].join(' ')}
         >
-          <Terminal size={11} />
+          <TerminalSquare size={11} strokeWidth={1.8} />
           Console
         </button>
 
-        <button className="flex items-center gap-1.5 border border-red-500/50 px-2.5 py-1 rounded bg-red-500/10 hover:bg-red-500 hover:text-white transition-all duration-150 text-[9px] uppercase font-bold tracking-wider text-red-400">
-          <Activity size={11} />
-          Status: ACTIVE
-        </button>
+        {/* Divider */}
+        <div className="h-4 w-px bg-white/[0.08] mx-0.5" />
 
-        <button className="flex items-center gap-1.5 border border-red-500/50 px-2.5 py-1 rounded bg-red-500/10 hover:bg-red-500 hover:text-white transition-all duration-150 text-[9px] uppercase font-bold tracking-wider text-red-400">
-          <Skull size={11} />
-          Forensics
-        </button>
+        {/* Status button */}
+        <ActionButton icon={<Activity size={11} strokeWidth={1.8} />} label="Status: Active" />
 
-        <button
+        {/* Forensics button */}
+        <ActionButton icon={<Skull size={11} strokeWidth={1.8} />} label="Forensics" />
+
+        {/* Divider */}
+        <div className="h-4 w-px bg-white/[0.08] mx-0.5" />
+
+        <IconButton
           onClick={onToggleRight}
+          active={rightOpen}
           title={rightOpen ? 'Collapse right panel' : 'Expand right panel'}
-          className={[
-            'p-1 rounded transition-colors duration-150 ml-1',
-            rightOpen
-              ? 'text-red-500/70 hover:text-red-500'
-              : 'text-zinc-600 hover:text-red-500/70',
-          ].join(' ')}
         >
-          <PanelRight size={15} />
-        </button>
+          <PanelRight size={14} />
+        </IconButton>
       </div>
     </header>
   );
 };
+
+/* ── Sub-components ───────────────────────────────────────────── */
+
+interface IconButtonProps {
+  onClick: () => void;
+  active: boolean;
+  title: string;
+  children: React.ReactNode;
+}
+
+const IconButton: React.FC<IconButtonProps> = ({ onClick, active, title, children }) => (
+  <button
+    onClick={onClick}
+    title={title}
+    className={[
+      'flex items-center justify-center w-7 h-7 rounded transition-all duration-150',
+      active
+        ? 'text-red-400/80 bg-red-500/10 hover:text-red-400 hover:bg-red-500/15'
+        : 'text-zinc-600 bg-transparent hover:text-zinc-300 hover:bg-white/[0.05]',
+    ].join(' ')}
+  >
+    {children}
+  </button>
+);
+
+interface ActionButtonProps {
+  icon: React.ReactNode;
+  label: string;
+}
+
+const ActionButton: React.FC<ActionButtonProps> = ({ icon, label }) => (
+  <button className="flex items-center gap-1.5 px-2.5 h-7 rounded text-[9px] font-bold tracking-[0.10em] uppercase transition-all duration-150 bg-white/[0.03] border border-white/[0.07] text-zinc-500 hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-400">
+    {icon}
+    {label}
+  </button>
+);

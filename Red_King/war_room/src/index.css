@@ -1,64 +1,170 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Base ─────────────────────────────────────────────────────── */
 @layer base {
   body {
-    @apply bg-[#050505] text-[#00f3ff] font-['Rajdhani'] antialiased overflow-hidden;
-    background-image: 
-      linear-gradient(rgba(0, 255, 60, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 60, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+    @apply bg-[#080808] text-[#d4d4d4] antialiased overflow-hidden;
+    font-family: 'Rajdhani', 'Fira Code', monospace;
+    background-image:
+      linear-gradient(rgba(0, 255, 60, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 60, 0.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 }
 
+/* ─── Utilities ─────────────────────────────────────────────────── */
 @layer utilities {
+
+  /* Legacy glass card — kept for backward compatibility */
   .glass-card {
-    @apply bg-[rgba(20,0,0,0.6)] backdrop-blur-md border border-red-500/40 shadow-[0_0_15px_rgba(255,0,0,0.15)];
+    background: rgba(20, 0, 0, 0.55);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(239, 68, 68, 0.18);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.08), inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
-  .text-neon-cyan {
-    @apply text-[#00f3ff] drop-shadow-[0_0_5px_rgba(0,243,255,0.5)];
+  /* Premium panel glass */
+  .panel-glass {
+    background: rgba(14, 14, 14, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 0 0 1px rgba(0,0,0,0.5),
+      0 8px 32px rgba(0,0,0,0.6);
   }
 
+  /* Neon text — danger */
   .text-neon-red {
-    @apply text-[#ff003c] drop-shadow-[0_0_5px_rgba(255,0,60,0.5)];
+    color: #ff003c;
+    filter: drop-shadow(0 0 6px rgba(255, 0, 60, 0.55));
   }
 
+  /* Neon text — cyan */
+  .text-neon-cyan {
+    color: #00f3ff;
+    filter: drop-shadow(0 0 6px rgba(0, 243, 255, 0.55));
+  }
+
+  /* Neon text — emerald */
+  .text-neon-green {
+    color: #10b981;
+    filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.5));
+  }
+
+  /* ── Shell premium scrollbar ──────────────────────────────────── */
+  .shell-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(239, 68, 68, 0.15) transparent;
+  }
+  .shell-scrollbar::-webkit-scrollbar {
+    width: 3px;
+  }
+  .shell-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .shell-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(239, 68, 68, 0.15);
+    border-radius: 9999px;
+    transition: background 0.2s;
+  }
+  .shell-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: rgba(239, 68, 68, 0.30);
+  }
+  .shell-scrollbar::-webkit-scrollbar-thumb:active {
+    background: rgba(239, 68, 68, 0.50);
+  }
+
+  /* ── Legacy custom scrollbar — kept for existing components ───── */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(127, 29, 29, 0.4) transparent;
+  }
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-black/50;
+    background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-red-900/50 rounded;
+    background: rgba(127, 29, 29, 0.4);
+    border-radius: 9999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(239, 68, 68, 0.4);
+  }
+
+  /* ── Loading shimmer ──────────────────────────────────────────── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0.07) 50%,
+      rgba(255,255,255,0.03) 100%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* ── Empty state ──────────────────────────────────────────────── */
+  .empty-state {
+    @apply flex flex-col items-center justify-center gap-3 py-8 text-center;
+    animation: fadeIn 0.3s ease-out both;
+  }
+
+  /* ── Glow borders ─────────────────────────────────────────────── */
+  .border-glow-red {
+    border-color: rgba(239, 68, 68, 0.35);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.10);
+  }
+  .border-glow-cyan {
+    border-color: rgba(0, 243, 255, 0.35);
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.10);
+  }
+  .border-glow-emerald {
+    border-color: rgba(16, 185, 129, 0.35);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.10);
   }
 }
 
-/* CRT Scanline Animation */
+/* ─── Keyframes ─────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400% 0; }
+  100% { background-position:  400% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes scanline {
-  0% { transform: translateY(-100%); }
+  0%   { transform: translateY(-100%); }
   100% { transform: translateY(100%); }
 }
 
+/* ─── CRT Scanline ──────────────────────────────────────────────── */
 .scanline::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   background: linear-gradient(
     to bottom,
     transparent 50%,
-    rgba(0, 255, 60, 0.02) 50%,
-    rgba(0, 255, 60, 0.05) 50.5%,
+    rgba(0, 255, 60, 0.015) 50%,
+    rgba(0, 255, 60, 0.03) 50.5%,
     transparent 51%
   );
   background-size: 100% 4px;
-  animation: scanline 8s linear infinite;
+  animation: scanline 10s linear infinite;
   pointer-events: none;
   z-index: 9999;
 }
