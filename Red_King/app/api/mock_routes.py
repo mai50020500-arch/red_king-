@@ -5,10 +5,13 @@ Real integrations (Shodan, VirusTotal, etc.) are wired up separately
 only when the user explicitly approves a live run.
 """
 import asyncio
+import base64
+import io
 import json
 import os
 from fastapi import APIRouter, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import StreamingResponse
+from PIL import Image, ImageDraw
 from app.core.llm_commander import hive_mind
 from app.core.red_cipher import RedCipher
 from app.core.schemas import ConsultationRequest, StrictAgentCheckIn
@@ -269,9 +272,23 @@ async def hive_stream(websocket: WebSocket, agent_id: str):
         for msg in boot_msgs:
             await websocket.send_text(json.dumps({"type": "log", "msg": msg}))
             await asyncio.sleep(1.2)
-        # Keep alive with heartbeats
+
+        frame_index = 0
         while True:
-            await asyncio.sleep(6)
-            await websocket.send_text(json.dumps({"type": "heartbeat", "msg": f"[{agent_id}] ALIVE"}))
+            image = Image.new("RGB", (320, 180), (0, 0, 0))
+            draw = ImageDraw.Draw(image)
+            draw.rectangle((0, 0, 319, 179), fill=(8, 16, 24))
+            draw.rectangle((12, 24, 308, 156), outline=(255, 0, 60), width=2)
+            draw.text((24, 40), f"AGENT {agent_id[:8]}", fill=(255, 0, 60))
+            draw.text((24, 74), "LIVE VISUAL INTEL", fill=(0, 243, 255))
+            draw.text((24, 104), f"FRAME {frame_index}", fill=(255, 255, 255))
+            draw.text((24, 132), "STATUS: ACTIVE", fill=(0, 255, 120))
+
+            buffer = io.BytesIO()
+            image.save(buffer, format="JPEG", quality=70)
+            payload = base64.b64encode(buffer.getvalue()).decode("ascii")
+            await websocket.send_text(json.dumps({"type": "SCREEN_FRAME", "data": payload}))
+            frame_index += 1
+            await asyncio.sleep(0.5)
     except WebSocketDisconnect:
         pass
